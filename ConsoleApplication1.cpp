@@ -1,6 +1,9 @@
 // ConsoleApplication1.cpp : définit le point d'entrée pour l'application console.
 //
-
+//todo: Include IMGUI and get a first look on it. 
+/**
+This will be directly added on this project on "Instable" branch until GUI allow to show few debugs info.
+**/
 #include "stdafx.h"
 #include <iostream>
 
@@ -16,7 +19,7 @@
 #endif //DEBUG
 
 using namespace std;
-
+//todo (#me): Change mSecret to string or array of char.
 int mSecret[20];
 
 int main()
