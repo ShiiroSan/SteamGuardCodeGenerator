@@ -39,6 +39,8 @@ std::string generateSteamGuardCodeForTime(long lTime, int mSecret[])
 			DEBUG_MSG("lTime after bitwise worth " << lTime);
 			n2 = n3;
 		}
+		//TODO (#me1): Add Hmac-SHA1
+		//TODO (#me2): Give a look to bytebuffer (java)
 	}
 	return steamCode;
 }
