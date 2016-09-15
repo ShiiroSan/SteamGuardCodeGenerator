@@ -1,58 +1,8 @@
-#include "stdafx.h"
-#include "TimeCorrector.h"
-#include "SGCPG.h"
-#include <wincrypt.h>      // CryptoAPI definitions
+#include <stdio.h>
+#include <windows.h>
+#include <wincrypt.h>
 
-#define DEBUG
-#ifdef DEBUG
-#define DEBUG_MSG(str) do { std::cout << str << std::endl; } while( false )
-#else
-#define DEBUG_MSG(str) do { } while ( false )
-#endif //DEBUG
-
-const int SGCharsLength = 27;
-unsigned char s_cgchSteamguardCodeChars[SGCharsLength] = "23456789BCDFGHJKMNPQRTVWXY";
-
-
-std::string generateSteamGuardCodeForTime(long lTime, BYTE mSecret[])
-{
-	std::string steamCode;
-	if (mSecret == NULL)
-		steamCode = "";
-	else
-	{
-		lTime /= 30L;
-		BYTE mainComponent[8];
-		int n2 = 8;
-		while (true)
-		{
-			int n3 = n2 - 1;
-			if (n2 <= 0)
-			{
-				break;
-			}
-			mainComponent[n3] = (BYTE)lTime;
-			DEBUG_MSG("mainComponent[n3] with pos: " << n3 << " worth " << (int)mainComponent[n3]);
-			DEBUG_MSG("lTime before bitwise worth " << lTime);
-			lTime = lTime >> 8;
-			DEBUG_MSG("lTime after bitwise worth " << lTime);
-			n2 = n3;
-		}
-		hmacsha1(mSecret, mainComponent);
-		//TODO (#me1.1): Make SHA1 func
-
-		//TODO: (#me1.2) Make HMAC func following AutoIT ones.
-		//TODO (#me2): Give a look to bytebuffer (java)
-	}
-	return steamCode;
-}
-
-std::string generateSteamGuardCode(BYTE mSecret[])
-{
-	return generateSteamGuardCodeForTime(currentTime(), mSecret);
-}
-
-void hmacsha1(BYTE password[], BYTE message[])
+int main()
 {
 	//--------------------------------------------------------------------
 	// Declare variables.
@@ -66,8 +16,8 @@ void hmacsha1(BYTE password[], BYTE message[])
 	// hHmacHash:       Handle to an HMAC hash.
 	// pbHash:          Pointer to the hash.
 	// dwDataLen:       Length, in bytes, of the hash.
-	// password:           Password string used to create a symmetric key.
-	// message:           Message string to be hashed.
+	// Data1:           Password string used to create a symmetric key.
+	// Data2:           Message string to be hashed.
 	// HmacInfo:        Instance of an HMAC_INFO structure that contains 
 	//                  information about the HMAC hash.
 	// 
@@ -77,10 +27,8 @@ void hmacsha1(BYTE password[], BYTE message[])
 	HCRYPTHASH  hHmacHash = NULL;
 	PBYTE       pbHash = NULL;
 	DWORD       dwDataLen = 0;
-	//BYTE        password[] = { 0x70,0x61,0x73,0x73,0x77,0x6F,0x72,0x64 };
-	//BYTE        message[] = { 0x6D,0x65,0x73,0x73,0x61,0x67,0x65 };
-
-
+	BYTE        Data1[] = { 0x70,0x61,0x73,0x73,0x77,0x6F,0x72,0x64 };
+	BYTE        Data2[] = { 0x6D,0x65,0x73,0x73,0x61,0x67,0x65 };
 	HMAC_INFO   HmacInfo;
 
 	//--------------------------------------------------------------------
@@ -129,8 +77,8 @@ void hmacsha1(BYTE password[], BYTE message[])
 
 	if (!CryptHashData(
 		hHash,                    // handle of the hash object
-		password,                    // password to hash
-		sizeof(password),            // number of bytes of data to add
+		Data1,                    // password to hash
+		sizeof(Data1),            // number of bytes of data to add
 		0))                       // flags
 	{
 		printf("Error in CryptHashData 0x%08x \n",
@@ -187,8 +135,8 @@ void hmacsha1(BYTE password[], BYTE message[])
 
 	if (!CryptHashData(
 		hHmacHash,                // handle of the HMAC hash object
-		message,                    // message to hash
-		sizeof(message),            // number of bytes of data to add
+		Data2,                    // message to hash
+		sizeof(Data2),            // number of bytes of data to add
 		0))                       // flags
 	{
 		printf("Error in CryptHashData 0x%08x \n",
@@ -252,6 +200,5 @@ ErrorExit:
 		CryptReleaseContext(hProv, 0);
 	if (pbHash)
 		free(pbHash);
-	//cin.get();
-	//return 0;
+	return 0;
 }

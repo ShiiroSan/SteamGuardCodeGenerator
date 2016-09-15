@@ -11,6 +11,10 @@ This will be directly added on this project on "Instable" branch until GUI allow
 #include "TimeCorrector.h"
 #include "SGCPG.h"
 
+#include <stdio.h>
+#include <windows.h>
+#include <wincrypt.h>
+
 #define DEBUG
 #ifdef DEBUG
 #define DEBUG_MSG(str) do { std::cout << str << std::endl; } while( false )
@@ -20,7 +24,7 @@ This will be directly added on this project on "Instable" branch until GUI allow
 
 using namespace std;
 //todo (#me): Change mSecret to string or array of char.
-int mSecret[20];
+BYTE mSecret[20];
 
 int main()
 {
@@ -34,8 +38,11 @@ int main()
 			" your key to eaudrey96@gmail.com" << endl;
 		return EXIT_FAILURE;
 	}
-	generateSteamGuardCode(mSecret);
+	/*DEBUGGING PURPOSE ONLY*/
+	long lTime = 1473872869;
+
+	generateSteamGuardCodeForTime(lTime, mSecret);
+	//generateSteamGuardCode(mSecret);
 	cin.get();
 	return 0;
 }
-

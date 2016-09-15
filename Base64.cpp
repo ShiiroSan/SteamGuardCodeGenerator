@@ -131,7 +131,7 @@ std::string base64_decode(std::string const& encoded_string) {
 	return ret;
 }
 //todo (#me): Removes getBytes which is used only for debug purposes of B64.
-bool getBytes(std::string sStringToConvert, int decArray[])
+bool getBytes(std::string sStringToConvert, BYTE decArray[])
 {
 	DEBUG_MSG("Entering getBytes function.");
 	const int l_iStringLength = sStringToConvert.length();
@@ -145,7 +145,7 @@ bool getBytes(std::string sStringToConvert, int decArray[])
 	for (unsigned int j = 0; j < strlen(cStrToChr); j++)
 	{
 		decArray[j] = (int)ucRealCharValue[j];
-		DEBUG_MSG("At position " << j << " ucRealCharValue worth " << ucRealCharValue[j] <<
+		DEBUG_MSG("At position " << j << " ucRealCharValue worth " << (int)ucRealCharValue[j] <<
 			" which represents " << decArray[j]);
 	}
 	return 1;
