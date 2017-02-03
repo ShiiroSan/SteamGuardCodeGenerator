@@ -1,0 +1,11 @@
+SteamGuardDesktopv0.1a - Rapport des modifications
+------------------------------------------------------------------
+
+/////////////////////////////////////////
+///Date : 2017/01/24
+///
+///Editor: ShiiroSan
+/////////////////////////////////////////
+
+- Changed name of the project from "SteamGuardCodeGenerator" to "SteamGuardDesktop"
+- This will be considered as the beginning of the project.
